@@ -1,0 +1,10 @@
+{
+  "Culture": "en",
+  "Texts": {
+    "Menu:Home": "Home",
+    "Menu:Documentation": "Documentation",
+    "Menu:Administration": "Administration",
+    "MyDocsProject": "My Docs Project",
+    "Permission:Documentation": "Documentation Management"
+  }
+}

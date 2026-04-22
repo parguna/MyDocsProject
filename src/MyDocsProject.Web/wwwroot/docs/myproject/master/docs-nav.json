@@ -1,0 +1,19 @@
+[
+  {
+    "text": "Getting Started",
+    "path": "Index"
+  },
+  {
+    "text": "Guides",
+    "items": [
+      {
+        "text": "Installation",
+        "path": "guides/installation"
+      },
+      {
+        "text": "Configuration",
+        "path": "guides/configuration"
+      }
+    ]
+  }
+]

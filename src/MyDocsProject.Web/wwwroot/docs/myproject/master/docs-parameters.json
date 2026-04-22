@@ -1,0 +1,13 @@
+{
+  "project": {
+    "name": "My Documentation",
+    "shortName": "myproject"
+  },
+  "versions": [
+    {
+      "name": "master",
+      "displayName": "Latest",
+      "isLatest": true
+    }
+  ]
+}
