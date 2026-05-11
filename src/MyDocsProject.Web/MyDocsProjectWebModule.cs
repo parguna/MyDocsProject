@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi;
 using MyDocsProject.EntityFrameworkCore;
 using MyDocsProject.Localization;
 using MyDocsProject.MultiTenancy;
 using MyDocsProject.Permissions;
+using MyDocsProject.Web.Docs;
 using MyDocsProject.Web.HealthChecks;
 using MyDocsProject.Web.Menus;
 using OpenIddict.Server.AspNetCore;
@@ -53,8 +55,7 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Docs;
 using Volo.Docs.Admin;
-using Volo.Docs.Admin.Web;
-using Volo.Docs.Web;
+using Volo.Docs.Documents;
 
 namespace MyDocsProject.Web;
 
@@ -67,6 +68,7 @@ namespace MyDocsProject.Web;
     typeof(AbpIdentityWebModule),
     typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
     typeof(AbpAccountWebOpenIddictModule),
+    typeof(AbpAccountWebModule),
     typeof(AbpTenantManagementWebModule),
     typeof(AbpFeatureManagementWebModule),
     typeof(AbpSwashbuckleModule),
@@ -149,21 +151,7 @@ public class MyDocsProjectWebModule : AbpModule
         {
             context.Services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
-        } // Add Docs configuration
-        Configure<DocsOptions>(options =>
-        {
-            options.Projects.Add(new DocsProjectConfig
-            {
-                Name = "My Documentation",
-                ShortName = "myproject",
-                Format = "md",
-                DefaultDocumentName = "Index",
-                NavigationDocumentName = "docs-nav.json",
-                ParametersDocumentName = "docs-parameters.json",
-                DocumentStoreType = "FileSystem",
-                LatestVersionBranchName = "master"
-            });
-        });
+        } 
 
         ConfigureStudio(hostingEnvironment);
         ConfigureBundles(hostingEnvironment);

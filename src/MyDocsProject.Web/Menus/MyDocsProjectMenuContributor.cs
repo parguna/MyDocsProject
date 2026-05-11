@@ -36,15 +36,8 @@ public class MyDocsProjectMenuContributor : IMenuContributor
         );
 
         // Documentation menu - Direct link
-        context.Menu.AddItem(
-            new ApplicationMenuItem(
-                "Docs",
-                l["Menu:Documentation"],
-                "~/Documents",
-                icon: "fa fa-book",
-                order: 2
-            )
-        );
+        context.Menu.Items.Add(new ApplicationMenuItem("MyProject.Docs", l["Menu:Docs"], "/Documents"));
+
 
 
 

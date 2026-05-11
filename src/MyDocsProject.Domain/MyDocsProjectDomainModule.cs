@@ -3,20 +3,21 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using MyDocsProject.Localization;
 using MyDocsProject.MultiTenancy;
 using System;
-using Volo.Abp.Localization;
-using Volo.Abp.Modularity;
-using Volo.Abp.MultiTenancy;
-using Volo.Abp.PermissionManagement.Identity;
-using Volo.Abp.SettingManagement;
-using Volo.Abp.BlobStoring.Database;
-using Volo.Abp.Caching;
-using Volo.Abp.OpenIddict;
-using Volo.Abp.PermissionManagement.OpenIddict;
+using Volo.Abp.Auditing;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
+using Volo.Abp.BlobStoring.Database;
+using Volo.Abp.Caching;
 using Volo.Abp.Emailing;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
+using Volo.Abp.Localization;
+using Volo.Abp.Modularity;
+using Volo.Abp.MultiTenancy;
+using Volo.Abp.OpenIddict;
+using Volo.Abp.PermissionManagement.Identity;
+using Volo.Abp.PermissionManagement.OpenIddict;
+using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
 using Volo.Docs;
 
@@ -31,6 +32,7 @@ namespace MyDocsProject;
     typeof(AbpPermissionManagementDomainIdentityModule),
     typeof(AbpPermissionManagementDomainOpenIddictModule),
     typeof(AbpSettingManagementDomainModule),
+    typeof(AbpAuditingModule),
     typeof(AbpEmailingModule),
     typeof(AbpIdentityDomainModule),
     typeof(AbpOpenIddictDomainModule),
