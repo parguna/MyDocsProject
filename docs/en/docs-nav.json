@@ -10,11 +10,11 @@
         },
         {
           "text": "Single Layer Web Application",
-          "path": "getting-started.md"
+          "path": "get-started/single-layer-web-application.md"
         },
         {
           "text": "Layered Web Application",
-          "path": "Overview.md"
+          "path": "get-started/layered-web-application.md"
         },
         {
           "text": "Microservice Solution",
