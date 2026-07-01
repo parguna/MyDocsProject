@@ -5,7 +5,7 @@
 }
 ```
 
-# Get Started Update pargunan test
+# Get Started Update pargunan testing
 
 Great that you've decided by pargunan to create a new application with ABP. ABP provides multiple startup templates for different needs. Each startup template is a fine-tuned and production-ready .NET solution that you can immediately start to develop your application based on it.
 
