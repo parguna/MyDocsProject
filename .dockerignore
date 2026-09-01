@@ -1,0 +1,40 @@
+# VCS / IDE
+.git/
+.vs/
+.vscode/
+.cursor/
+*.user
+*.suo
+
+# Build output (must not leak stale host builds into the source-build context)
+**/bin/
+**/obj/
+**/publish/
+
+# Runtime logs written by Serilog file sink
+**/Logs/
+
+# Node/front-end noise (Web project has package.json/yarn.lock)
+**/node_modules/
+
+# Test projects (not part of the deployable image)
+test/
+
+# Secrets / certs — never bake into an image layer
+.env
+*.pfx
+
+# NOTE: appsettings.secrets.json is intentionally NOT excluded here — the DbMigrator
+# csproj has an unconditional <Content Include="appsettings.secrets.json"> that fails
+# the publish step if the file is missing. It ships empty ({}) in this repo. The Docker
+# deployment path uses .env-sourced environment variables for real secrets instead of
+# this file — keep it empty if you also use it for local (non-Docker) secret overrides,
+# or those values would end up baked into the image layer.
+
+# Misc — not needed inside the build context
+docs/
+etc/
+README.md
+swagger.json
+*.abpsln
+*.abpmdl

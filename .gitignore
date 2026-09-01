@@ -272,3 +272,7 @@ src/MyDocsProject.Blazor.Server.Tiered/Logs/*
 # IdentityServer temp files
 tempkey.rsa
 tempkey.jwk
+
+# Docker / secrets
+.env
+appsettings.secrets.json

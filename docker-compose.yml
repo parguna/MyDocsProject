@@ -1,0 +1,78 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD}
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q 'SELECT 1' -b -o /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+    # No host port published by default — internal-network-only. Uncomment to allow
+    # an external DB tool to connect for local troubleshooting:
+    # ports:
+    #   - "1433:1433"
+
+  dbmigrator:
+    build:
+      context: .
+      dockerfile: src/MyDocsProject.DbMigrator/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__Default: "Server=sqlserver;Database=VoloDocs2;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True"
+      OpenIddict__Applications__MyDocsProject_Swagger__RootUrl: "https://localhost:44335/"
+      DocsGithub__ProjectName: ${DOCS_GITHUB_PROJECT_NAME:-}
+      DocsGithub__ProjectShortName: ${DOCS_GITHUB_PROJECT_SHORT_NAME:-}
+      DocsGithub__RootUrl: ${DOCS_GITHUB_ROOT_URL:-}
+      DocsGithub__AccessToken: ${DOCS_GITHUB_TOKEN:-}
+      DocsGithub__LatestVersionBranchName: ${DOCS_GITHUB_LATEST_VERSION_BRANCH_NAME:-master}
+    networks: [internal]
+    restart: "no"
+
+  web:
+    build:
+      context: .
+      dockerfile: src/MyDocsProject.Web/Dockerfile
+    depends_on:
+      dbmigrator:
+        condition: service_completed_successfully
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: "Server=sqlserver;Database=VoloDocs2;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True"
+      AuthServer__CertificatePassPhrase: ${CERT_PASSPHRASE}
+      StringEncryption__DefaultPassPhrase: ${STRING_ENCRYPTION_PASSPHRASE}
+      App__DisablePII: "true"
+      # The app binds to a wildcard host (ASPNETCORE_URLS=http://+:8080;...) inside the
+      # container, which AspNetCore.HealthChecks.UI's background self-poller can't dial
+      # directly (it fails trying to resolve "[::]"/"0.0.0.0" as a target address) — point
+      # it at the concrete, in-container loopback address instead.
+      App__HealthUiCheckUrl: "http://localhost:8080/health-status"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /app/keys/openiddict.pfx
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${CERT_PASSPHRASE}
+    volumes:
+      - openiddict_certs:/app/keys
+    networks: [internal]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health-status"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "44335:8081"
+    restart: unless-stopped
+
+networks:
+  internal: {}
+
+volumes:
+  sqlserver_data:    # SQL Server data files — persists across `down`/`up`, dropped only by `down -v`
+  openiddict_certs:  # Self-signed cert reused for Kestrel TLS + OpenIddict signing — persists so restarts don't invalidate tokens
