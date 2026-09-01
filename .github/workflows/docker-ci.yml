@@ -26,6 +26,16 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      # wwwroot/libs (bundled CSS/JS like abp.css) is gitignored — the ABP template expects
+      # it to be restored via the ABP CLI, not committed. Without this, Web.Tests fails with
+      # "Could not find file '/libs/abp/core/abp.css'" because the bundling middleware can't
+      # find files that were never checked out on the runner.
+      - name: Restore client-side libraries (abp install-libs)
+        run: |
+          dotnet tool install -g Volo.Abp.Studio.Cli
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          abp install-libs -wd src/MyDocsProject.Web
+
       - name: Restore
         run: dotnet restore MyDocsProject.slnx
 
