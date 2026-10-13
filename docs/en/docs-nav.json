@@ -1,6 +1,24 @@
 {
   "items": [
     {
+      "text": "Bluestar",
+      "items": [
+        {
+          "text": "Overview",
+          "path": "bluestar",
+          "isIndex": true
+        },
+        {
+          "text": "Lifecycle Workflows",
+          "path": "bluestar/workflows.md"
+        },
+        {
+          "text": "Access Reviews",
+          "path": "bluestar/access-reviews.md"
+        }
+      ]
+    },
+    {
       "text": "Get Started",
       "items": [
         {
